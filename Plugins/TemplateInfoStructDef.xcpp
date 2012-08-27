@@ -1,0 +1,105 @@
+<plugin name="File Template Plist Structure Definition"
+		id="com.apple.xcode.plist-plugin.filetemplate"
+		version="1.0"
+		xmlns:xc="urn:X-AliSoftware:xcodeplugin:preprocessor">
+		
+	<extension point="com.apple.xcode.plist.structure-definition"
+			   id="com.niji.dsquare.plist.structure-definition.filetemplate" version="1.0"
+			   name="File Template plist">
+
+		<filename pattern="TemplateInfo.plist" />
+	
+		<!-- "_root_" is the magic name of the top-level property list element -->
+		<definition name="_root_" localizedString="Template Description" class="Dictionary">
+			<dictionaryKeys>
+				<key name="Kind" localizedString="Template Type" class="TemplateKind" use="required"/>
+				<key name="AllowedTypes" localizedString="Allowed UTI file types" class="AllowedUTITypesList" use="required"/>
+				<key name="DefaultCompletionName" localizedString="Default completion name" class="String" use="required"/>
+				<key name="Description" localizedString="Template Description" class="String" use="optional"/>
+				<key name="MainTemplateFile" localizedString="Main template file" class="String" default="__FILEBASENAME__.m" use="required" />
+				<key name="Options" localizedString="Options" class="OptionsList" use="optional" />
+				<key name="Platforms" localizedString="Supported platforms" class="PlatformsList" use="required" />
+				<key name="SortOrder" localizedString="Sort order" class="String" />
+				<key name="Summary" localizedString="Template Summary" class="String" use="optional" />
+			</dictionaryKeys>
+		</definition>
+	
+		<!-- Template Kind -->
+		<definition name="TemplateKind" class="String">
+			<allowableValues>
+				<value name="Xcode.IDEKit.TextSubstitutionFileTemplateKind"
+					   localizedString="File Template with Text Substitution" />
+			</allowableValues>
+		</definition>
+		
+		<!-- Allowed Types -->
+		<definition name="AllowedUTITypesList" class="Array" arrayElementClass="AllowedUTITypesEntry">
+			<arrayEntries>
+				<entry class="AllowedUTITypesEntry" localizedString="Objective-C Source" />
+			</arrayEntries>
+		</definition>
+		<definition name="AllowedUTITypesEntry" class="String">
+			<allowableValues>
+				<value name="public.objective-c-source" localizedString="Objective-C Source" />
+				<value name="public.objective-c-plus-plus-source" localizedString="Objective-C++ Source" />
+			</allowableValues>
+		</definition>
+		
+		<!-- Platform -->
+		<definition name="PlatformsList" class="Array" arrayElementClass="PlatformsEntry">
+			<arrayEntries>
+				<entry class="PlatformsEntry" localizedString="iPhone OS" />
+			</arrayEntries>
+		</definition>
+		<definition name="PlatformsEntry" class="String">
+			<allowableValues>
+				<value name="com.apple.platform.iphoneos" localizedString="iPhone OS" />
+				<value name="com.apple.platform.macosx" localizedString="Mac OS" />
+			</allowableValues>
+		</definition>
+
+
+
+
+		<!-- Options -->
+		<definition name="OptionsList" class="Array" arrayElementClass="OptionsEntry" />
+		
+		<xc:define id="CommonOptionProperties">
+			<key name="Identifier" localizedString="Identifier" class="String" use="required"/>
+			<key name="Description" localizedString="Description" class="String" use="required"/>
+			<key name="Name" localizedString="Option Name / Label" class="String" use="required"/>
+			<key name="Default" localizedString="Default value" class="String" use="required"/>
+			<key name="RequiredOptions" localizedString="Required Options to enabled this option" class="RequiredOptionsType"/>
+		</xc:define>
+
+		<definition name="OptionsEntry" class="VariantDictionary" default="OptionsEntry_Text">
+			<xc:variants variantKey="Type" localizedString="Type">
+				<xc:variant variantValue="text" localizedString="Text Field" identifyingKey="Identifier">
+					<xc:paste idref="CommonOptionProperties" />
+					<key name="Required" localizedString="Is required" class="Boolean" use="optional"/>
+					<key name="NotPersisted" localizedString="Does not persist for next templates" class="Boolean" use="optional"/>
+				</xc:variant>
+				<xc:variant variantValue="class" localizedString="Class Popup" identifyingKey="Identifier">
+					<xc:paste idref="CommonOptionProperties" />
+					<key name="Required" localizedString="Is required" class="Boolean" use="required"/>
+					<key name="FallbackHeader" localizedString="Fallback Header to import" class="String" use="required"/>
+					<key name="Suffixes" localizedString="File name suffixes for known classes" class="DictionaryOfStrings" use="required"/>
+					<key name="Values" localizedString="Known classes with custom Template variants" class="ArrayOfStrings" use="required"/>
+				</xc:variant>
+				<xc:variant variantValue="checkbox" localizedString="Boolean Option" identifyingKey="Identifier">
+					<xc:paste idref="CommonOptionProperties" />
+				</xc:variant>
+			</xc:variants>
+		</definition>
+
+
+		<!-- Other Global Definitions -->
+		<definition name="RequiredOptionsType" localizedString="Required Options to enable this option" class="Dictionary">
+			<!-- For each option identifier required, associate an NSArray of values that will enable this option -->
+		</definition>
+		<definition name="DictionaryOfStrings" class="Dictionary"/>
+		<definition name="ArrayOfStrings" class="NSArray" arrayElementClass="String"/>
+		
+	</extension>
+
+</plugin>

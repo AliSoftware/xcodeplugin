@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin id="com.niji.dsquare.plist-plugin.demo"
+		name="Demo plist Structure Definition"
+		xmlns:xcpp="urn:X-AliSoftware:xcodeplugin:preprocessor">
+    
+    <extension id="com.niji.dsquare.plist.structure-definition.demo"
+               name="Demo plist">
+
+		<filename pattern="Demo*.plist" />
+		
+        <!-- "_root_" is the magic name of the top-level property list element -->
+        <definition name="_root_" localizedString="Demo Schema" class="Dictionary">
+	        <dictionaryKeys>
+                <key name="Name" localizedString="Inventory Name" class="String" use="required"/>
+                <key name="Items" localizedString="Inventory Items" class="Inventory" use="required"/>
+            </dictionaryKeys>
+        </definition>
+                
+        <definition name="Inventory" class="Array" arrayElementClass="InventoryItem">
+			<arrayEntries>
+                <entry class="BookTypeElement"/>
+                <entry class="MovieTypeElement"/>
+            </arrayEntries>
+        </definition>
+        
+        <definition name="InventoryItem" class="VariantDictionary" default="BookTypeElement">
+            <xcpp:variants variantKey="Kind" localizedString="Inventory Item Kind">
+            	<xcpp:variant variantValue="BookType" localizedString="Book" identifyingKey="Title">
+            		<key name="Title" localizedString="Book Title" class="String" use="required"/>
+					<key name="Author" localizedString="Book Author" class="String" use="optional"/>
+					<key name="ReleaseDate" localizedString="First Release Date" class="Date" use="optional"/>
+            	</xcpp:variant>
+                <xcpp:variant variantValue="MovieType" localizedString="Movie" identifyingKey="Title">
+            		<key name="Title" localizedString="Movie Title" class="String" use="required"/>
+					<key name="Director" localizedString="Director" class="String" use="optional"/>
+					<key name="ReleaseDate" localizedString="Air Date" class="Date" use="optional"/>
+                </xcpp:variant>
+                <xcpp:variant variantValue="CarType" localizedString="Car" identifyingKey="License">
+					<key name="License" localizedString="License Plate" class="String" use="required"/>
+					<key name="Brand" localizedString="Car Brand" class="String" use="optional"/>            
+                </xcpp:variant>
+            </xcpp:variants>
+        </definition>
+        
+    </extension>
+</plugin>
+

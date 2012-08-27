@@ -1,0 +1,38 @@
+#!/bin/sh
+
+if [ "$1" = "-install" ]; then
+	doInstall=1
+	mkdir -p "${outputDir}"
+	shift
+elif [ "$1" = "-xcodeplugin" ]; then
+	onlyPreprocess=1
+	shift
+fi
+if [ "${1:0:1}" = "-" -o ! -n "$1" ]; then
+	# Remaining argument starts with "-" or is empty
+	echo "Usage: xcpc [-install|-xcodeplugin] inputFile"
+	exit 1
+fi
+
+inputFile=$1
+if [ $doInstall ]; then
+	outputFile=~/Library/Developer/Xcode/Plug-Ins/$(basename $inputFile .xcpp).dvtplugin
+else
+	outputFile=/dev/stdout
+fi
+xsltDir=$(dirname $0)
+
+if [ $onlyPreprocess ]; then
+	/usr/bin/xsltproc "${xsltDir}/xcppreprocessor.xslt" "${inputFile}"
+	if [ $? -ne 0 ]; then
+		echo "Failed to preprocess plugin source."
+	fi
+else
+	cat "${inputFile}" | /usr/bin/xsltproc "${xsltDir}/xcppreprocessor.xslt" - | /usr/bin/xsltproc "${xsltDir}/xcpcompiler.xslt" - >"${outputFile}"
+	if [ $? -eq 0 ]; then
+		echo "Plugin generated to: ${outputFile}. Please restart Xcode."
+	else
+		echo "Failed to generate plugin."
+	fi
+fi
+
