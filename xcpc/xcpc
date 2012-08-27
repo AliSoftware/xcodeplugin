@@ -29,7 +29,7 @@ if [ $onlyPreprocess ]; then
 		echo "Failed to preprocess plugin source."
 	fi
 else
-	cat "${inputFile}" | /usr/bin/xsltproc "${xsltDir}/xcppreprocessor.xslt" - | /usr/bin/xsltproc "${xsltDir}/xcpcompiler.xslt" - >"${outputFile}"
+	cat "${inputFile}" | /usr/bin/xsltproc "${xsltDir}/xcppreprocessor.xslt" - | /usr/bin/xsltproc -o "${outputFile}" "${xsltDir}/xcpcompiler.xslt" -
 	if [ $? -eq 0 ]; then
 		echo "Plugin generated to: ${outputFile}. Please restart Xcode."
 	else

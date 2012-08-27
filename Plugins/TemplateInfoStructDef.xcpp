@@ -62,7 +62,11 @@
 
 
 		<!-- Options -->
-		<definition name="OptionsList" class="Array" arrayElementClass="OptionsEntry" />
+		<definition name="OptionsList" class="Array" arrayElementClass="OptionsEntry">
+			<arrayEntries>
+				<entry class="textElement" />
+			</arrayEntries>
+		</definition>
 		
 		<xc:define id="CommonOptionProperties">
 			<key name="Identifier" localizedString="Identifier" class="String" use="required"/>
@@ -72,7 +76,7 @@
 			<key name="RequiredOptions" localizedString="Required Options to enabled this option" class="RequiredOptionsType"/>
 		</xc:define>
 
-		<definition name="OptionsEntry" class="VariantDictionary" default="OptionsEntry_Text">
+		<definition name="OptionsEntry" class="VariantDictionary" default="textElement">
 			<xc:variants variantKey="Type" localizedString="Type">
 				<xc:variant variantValue="text" localizedString="Text Field" identifyingKey="Identifier">
 					<xc:paste idref="CommonOptionProperties" />

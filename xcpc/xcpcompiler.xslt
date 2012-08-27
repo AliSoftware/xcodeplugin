@@ -2,8 +2,9 @@
 
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:fn="http://www.w3.org/2005/xpath-functions"
 	xmlns:xcpp="urn:X-AliSoftware:xcodeplugin:preprocessor"
-	exclude-result-prefixes="xcpp">
+	exclude-result-prefixes="fn xcpp">
 
 <xsl:output method="xml" version="1.0" encoding="UTF-8" standalone="yes"
 	doctype-public="-//Apple//DTD PLIST 1.0//EN"
@@ -61,6 +62,7 @@
 			<xsl:copy-of select="." />
 			<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 		</string>
+		<xsl:apply-templates select="definition" />
 	</dict>
 </xsl:template>
 
@@ -69,6 +71,14 @@
 		<key>pattern</key>
 		<string><xsl:value-of select="@pattern" /></string>
 	</dict>
+</xsl:template>
+
+<xsl:template match="definition[@class='VariantDictionary']">
+	<xsl:if test="count(../definition[@name=current()/@default]) != 1">
+		<xsl:message>  Warning: definition for VariantDictionary '<xsl:value-of select="@name" />' has invalid default value '<xsl:value-of select="@default" />'.
+	Note that VariantDictionaries generated using &lt;xc:variants&gt; preprocessor tag have names build by appending 'Element' at the end of the corresponding variantValue
+		</xsl:message>
+	</xsl:if>
 </xsl:template>
 	
 </xsl:stylesheet>
