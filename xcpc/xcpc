@@ -2,7 +2,6 @@
 
 if [ "$1" = "-install" ]; then
 	doInstall=1
-	mkdir -p "${outputDir}"
 	shift
 elif [ "$1" = "-xcodeplugin" ]; then
 	onlyPreprocess=1
@@ -16,7 +15,9 @@ fi
 
 inputFile=$1
 if [ $doInstall ]; then
-	outputFile=~/Library/Developer/Xcode/Plug-Ins/$(basename $inputFile .xcpp).dvtplugin
+	outputDir=~/Library/Developer/Xcode/Plug-Ins
+	mkdir -p "${outputDir}"
+	outputFile=${outputDir}/$(basename $inputFile .xcpp).dvtplugin
 else
 	outputFile=/dev/stdout
 fi
