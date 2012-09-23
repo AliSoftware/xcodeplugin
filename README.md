@@ -32,14 +32,14 @@ xcpc will simply add:
 * Support for useful tags to simplify the input format, especially for VariantDictionary used to propose pre-filled
 dictionaries to your PLIST entries (like what is already done with the Settings.bundle/Info.plist files in Xcode to add
 PreferenceSpecifier entries for either Text Fields, Toggle Switches, Titles, Sliders, ...) without have to define a lot of
-repeatiting XML fragments; use `<xc:variant>` and `<xc:variant>` tags in your `<definition class="VariantDictionary">` nodes for that.
+repeatiting XML fragments; use `<xc:variants>` and `<xc:variant>` tags in your `<definition class="VariantDictionary">` nodes for that.
 * Support for "copy/pasting" XML fragments (like #define macros in C). The principle is to associate an id to some XML fragment
 so that you can "paste" it anywhere else in your XML without making a lot of copy/pasting. This is especially useful if you have
 a lot of common dictionary keys in your PLIST structure and don't want to repeat these key definitions everywhere.
 Use `<xc:define id="...">` and `<xc:paste idref="..." />` for that.
 
 The XML xcodeplugin file format is actually not documented by Apple so this is mainly guessing and introspection.
-The easiest way to discovery the syntax is to go and find inspiration in the existing xcodeplugin files
+The easiest way to discover the syntax is to go and find inspiration in the existing xcodeplugin files
 present in "Xcode.app/Contents/PlugIns" and in the examples provided with this project (see "Plugins" directory).
 
 ----
